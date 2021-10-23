@@ -3,14 +3,13 @@
 namespace Stillat\BladeDirectives;
 
 use Illuminate\Support\Facades\Blade;
+use ReflectionException;
 use ReflectionFunction;
 use ReflectionParameter;
-use ReflectionException;
 use Stillat\Primitives\Parser;
 
 class DirectiveFactory
 {
-
     /**
      * The Parser instance.
      *
@@ -28,8 +27,8 @@ class DirectiveFactory
      *
      * Directive handlers will have access to the provided parameters through $this->parameters.
      *
-     * @param string $name
-     * @param callable $handler
+     * @param  string  $name
+     * @param  callable  $handler
      */
     public function params($name, callable $handler)
     {
@@ -39,8 +38,8 @@ class DirectiveFactory
     /**
      * Register a handler for a custom Blade directive.
      *
-     * @param string $name
-     * @param callable $handler
+     * @param  string  $name
+     * @param  callable  $handler
      */
     public function make($name, callable $handler)
     {
@@ -50,8 +49,8 @@ class DirectiveFactory
     /**
      * Register a handler for a custom compiled Blade directive.
      *
-     * @param string $name
-     * @param callable $handler
+     * @param  string  $name
+     * @param  callable  $handler
      */
     public function compile($name, $handler)
     {
@@ -83,7 +82,7 @@ class DirectiveFactory
             $paramCompiler->setParameters($associatedParams);
             $handler = $handler->bindTo($paramCompiler);
 
-            $result =  call_user_func_array($handler, $associatedParams);
+            $result = call_user_func_array($handler, $associatedParams);
 
             if ($compileResult) {
                 return $paramCompiler->compile($result);
@@ -96,9 +95,10 @@ class DirectiveFactory
     /**
      * Associates the reflected parameters with their parsed values.
      *
-     * @param ReflectionParameter[] $directiveParameters
-     * @param string[] $expressionParameters
+     * @param  ReflectionParameter[]  $directiveParameters
+     * @param  string[]  $expressionParameters
      * @return array
+     *
      * @throws ReflectionException
      */
     private function associateParameters($directiveParameters, $expressionParameters)
