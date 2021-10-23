@@ -4,7 +4,6 @@ namespace Stillat\BladeDirectives;
 
 class DirectiveContainer
 {
-
     /**
      * The parameters.
      *
@@ -15,7 +14,7 @@ class DirectiveContainer
     /**
      * The directive's parameters.
      *
-     * @param array $parameters
+     * @param  array  $parameters
      */
     public function setParameters($parameters)
     {
@@ -25,7 +24,7 @@ class DirectiveContainer
     /**
      * Replaces parameters within the code sample with their PHP equivalents.
      *
-     * @param string $code
+     * @param  string  $code
      * @return string
      */
     public function compile($code)
