@@ -1,0 +1,26 @@
+{
+  "name": "stillat/blade-directives",
+  "description": "Provides utilities to help write Laravel Blade directives.",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "John Koster",
+      "email": "john@stillat.com"
+    }
+  ],
+  "require": {
+    "stillat/primitives": "^1.4",
+    "illuminate/view": "*",
+    "illuminate/support": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5 || ^9.0",
+    "orchestra/testbench": "^6.22"
+  },
+  "autoload": {
+    "psr-4": {
+      "Stillat\\BladeDirectives\\": "src"
+    }
+  }
+}
