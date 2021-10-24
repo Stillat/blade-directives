@@ -21,6 +21,23 @@ Which allows your users to write Blade like this:
 @slugify($title, '_')
 ```
 
+Developers using directives written using the `compile` method can also use named arguments:
+
+```php
+<?php
+
+use Stillat\BladeDirectives\Support\Facades\Directive;
+
+Directive::compile('limit', function ($value, $limit = 100, $end = '...') {
+   return '<?php echo \Illuminate\Support\Str::limit($value, $limit, $end); ?>';
+});
+```
+
+```blade
+@limit($myString, end: '---')
+@limit($myString, end: ':o', limit: 5)
+```
+
 That just feels better, and we didn't have to resort to error-prone `explode` calls, or `json_encode/json_decode`.
 
 ## Installation

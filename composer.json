@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "stillat/primitives": "^1.4",
+    "stillat/primitives": "^1.4.1",
     "illuminate/view": "*",
     "illuminate/support": "*"
   },
