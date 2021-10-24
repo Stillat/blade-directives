@@ -1,18 +1,17 @@
 <?php
 
-use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Blade;
-use Stillat\BladeDirectives\Support\Facades\Directive;
+use Orchestra\Testbench\TestCase;
 use Stillat\BladeDirectives\DirectiveContainer;
+use Stillat\BladeDirectives\Support\Facades\Directive;
 
 class ParserTest extends TestCase
 {
-
     public function test_directives_receive_parameters()
     {
-Directive::make('test', function ($param1, $param2, $param3, $param4) {
-    return $param1.'---'.$param2.'---'.$param3.'---'.$param4;
-});
+        Directive::make('test', function ($param1, $param2, $param3, $param4) {
+            return $param1.'---'.$param2.'---'.$param3.'---'.$param4;
+        });
 
         $template = <<<'BLADE'
 @test('hello', 'world', [1,2,3,'four', 'five' => [1, env('something', 'default')]], 'six')
@@ -30,7 +29,6 @@ BLADE;
 
         Directive::params('test', function ($expression) use (&$directiveExpression, &$directiveParams) {
             /** @var $this DirectiveContainer */
-
             $directiveExpression = $expression;
             $directiveParams = $this->parameters;
 
@@ -63,11 +61,9 @@ BLADE;
 
         $this->assertSame('$varName---((null) ?? (\'1234\'))', $result);
 
-
         $result = Blade::compileString('@test($varName, $anotherVarName)');
 
         $this->assertSame('$varName---(($anotherVarName) ?? (\'1234\'))', $result);
-
 
         Directive::make('test', function ($name, $default = '1234', $another = 1234) {
             return $name.'---'.$default.'---'.$another;
@@ -76,7 +72,6 @@ BLADE;
         $result = Blade::compileString('@test($varName)');
 
         $this->assertSame('$varName---((null) ?? (\'1234\'))---((null) ?? (1234))', $result);
-
 
         $result = Blade::compileString('@test($varName, "test")');
 
@@ -89,7 +84,7 @@ BLADE;
     public function test_parameters_can_be_compiled()
     {
         Directive::compile('test', function ($value = []) {
-           return '<?php foreach ($value as $testVar) {
+            return '<?php foreach ($value as $testVar) {
     echo $testVar;
 }';
         });
