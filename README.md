@@ -8,6 +8,44 @@ This library makes it possible to write code like this:
 <?php
 
 use Stillat\BladeDirectives\Support\Facades\Directive;
+use Illuminate\Support\Str;
+
+Directive::callback('limit', function ($value, $limit = 100, $end = '...') {
+    return Str::limit($value, $limit, $end);
+});
+```
+
+Which allows you or your directive's users to write Blade templates like this:
+
+```blade
+{{-- Invoke our directive callback with default arguments --}}
+@limit($myString)
+
+{{-- Invoke our directive callback and specify a limit --}}
+@limit($myString, 50)
+
+{{-- Invoke our directive callback and change only the "end" parameter using named arguments --}}
+@limit($myString, end: '---')
+
+{{-- Invoke our directive callback with all parameters --}}
+@limit($myString, 5, 'the cap')
+
+{{-- Invoke our directive callback with all parameters using named arguments --}}
+@limit($myString, end: ':o', limit: 5)
+```
+
+Note that we did not have to return a string, or do any string manipulation when using the `callback` method. When
+using the `callback` method, Blade Directives will do the heavy lifting behind the scenes for you, and you can
+just write Blade directives like any other PHP method.
+
+## Compilation Methods
+
+The most basic way to use the `compile` method is like so:
+
+```php
+<?php
+
+use Stillat\BladeDirectives\Support\Facades\Directive;
 
 Directive::compile('slugify', function ($value, $separator = '-') {
     return '<?php echo \Illuminate\Support\Str::slug($value, $separator); ?>';

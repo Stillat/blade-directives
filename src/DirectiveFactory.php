@@ -10,6 +10,8 @@ use Stillat\Primitives\Parser;
 
 class DirectiveFactory
 {
+    protected static $callbackHandlers = [];
+
     /**
      * The Parser instance.
      *
@@ -57,6 +59,18 @@ class DirectiveFactory
         Blade::directive($name, $this->getFactoryClosure($handler, true));
     }
 
+    /**
+     * Register a new callback-enabled directive.
+     *
+     * @param string $name
+     * @param callable $handler
+     * @return void
+     */
+    public function callback($name, $handler)
+    {
+        Blade::directive($name, $this->getCallbackClosure($name, $handler));
+    }
+
     private function getParametersForClosure($handler, $expression, $onlyExpressionArgs = false)
     {
         $handlerRef = new ReflectionFunction($handler);
@@ -77,6 +91,24 @@ class DirectiveFactory
 
             return call_user_func_array($handler, [$expression]);
         };
+    }
+
+    private function getCallbackClosure($name, $handler)
+    {
+        self::$callbackHandlers[$name] = $handler;
+
+        return function ($expression) use ($handler, $name) {
+            $associatedParams = $this->getParametersForClosure($handler, $expression);
+            $params = implode(', ', $associatedParams);
+
+            return '<?php echo \Stillat\BladeDirectives\DirectiveFactory::invokeCallbackHandler("'.$name.'", '.$params.'); ?>';
+        };
+    }
+
+    public static function invokeCallbackHandler($name, ...$args)
+    {
+        $handler = self::$callbackHandlers[$name];
+        return call_user_func($handler, ...$args);
     }
 
     private function getFactoryClosure($handler, $compileResult)
