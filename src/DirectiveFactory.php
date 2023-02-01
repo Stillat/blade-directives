@@ -62,8 +62,8 @@ class DirectiveFactory
     /**
      * Register a new callback-enabled directive.
      *
-     * @param string $name
-     * @param callable $handler
+     * @param  string  $name
+     * @param  callable  $handler
      * @return void
      */
     public function callback($name, $handler)
@@ -108,6 +108,7 @@ class DirectiveFactory
     public static function invokeCallbackHandler($name, ...$args)
     {
         $handler = self::$callbackHandlers[$name];
+
         return call_user_func($handler, ...$args);
     }
 
