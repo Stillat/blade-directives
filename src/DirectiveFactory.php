@@ -97,11 +97,8 @@ class DirectiveFactory
     {
         self::$callbackHandlers[$name] = $handler;
 
-        return function ($expression) use ($handler, $name) {
-            $associatedParams = $this->getParametersForClosure($handler, $expression);
-            $params = implode(', ', $associatedParams);
-
-            return '<?php echo \Stillat\BladeDirectives\DirectiveFactory::invokeCallbackHandler("'.$name.'", '.$params.'); ?>';
+        return function ($expression) use ($name) {
+            return '<?php echo \Stillat\BladeDirectives\DirectiveFactory::invokeCallbackHandler("'.$name.'", '.$expression.'); ?>';
         };
     }
 
